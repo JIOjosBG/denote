@@ -3,25 +3,10 @@ import Blob "mo:base/Blob";
 import Text "mo:base/Text";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
-import Nat "mo:base/Nat";
+import T "../Types";
 
-
-
-
-actor {
-  type Datasheet = {
-    version: Text;
-    title: Text;
-    // Motivation
-    creator: Text;
-    organization: ?Text;
-    fund: Text;
-    comments: Text;
-    // Composition
-    keywords: [Text];
-    size: Nat;
-    isSubset: Bool;
-  };
+actor DB {
+  type Datasheet = T.Datasheet;
 
   type DatasetRecord = {
     dataset: Blob;

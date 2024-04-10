@@ -1,23 +1,23 @@
 {
   "canisters": {
-    "denote_orchestrator_backend": {
+    "denote_orchestrator": {
       "declarations": {
         "node_compatibility": true
       },
-      "main": "src/denote_orchestrator_backend/main.mo",
+      "main": "src/denote_backend/orchestrator.mo",
       "type": "motoko"
     },
-    "denote_dbs_backend": {
+    "denote_dbs": {
       "declarations": {
         "node_compatibility": true
       },
-      "main": "src/denote_dbs_backend/main.mo",
+      "main": "src/denote_backend/dbs.mo",
       "type": "motoko"
     },
     "denote_frontend": {
       "dependencies": [
-        "denote_dbs_backend",
-        "denote_orchestrator_backend"
+        "denote_dbs",
+        "denote_orchestrator"
       ],
       "source": [
         "src/denote_frontend/build"
