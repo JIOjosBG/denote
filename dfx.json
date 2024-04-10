@@ -12,10 +12,9 @@
         "denote_backend"
       ],
       "source": [
-        "src/denote_frontend/dist"
+        "src/denote_frontend/build"
       ],
-      "type": "assets",
-      "workspace": "denote_frontend"
+      "type": "assets"
     }
   },
   "defaults": {
