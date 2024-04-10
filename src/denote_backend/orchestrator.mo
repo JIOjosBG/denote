@@ -1,14 +1,30 @@
 import Text "mo:base/Text";
 import Array "mo:base/Array";
+import Option "mo:base/Option";
 import T "../Types";
 
 
 
 actor Orchstrator{
   type Datasheet = T.Datasheet;
+  type DatasetRecord = T.DatasetRecord;
   
   var storages:[Text] = [];
   
+  public func downloadDataset(db:Text, id:Text): async ?Blob{
+    if( Array.indexOf(db,storages,Text.equal) != null){
+      var dbToCall =  actor(db): actor {getDataset (datasetId: Text): async ?DatasetRecord};
+      var fetched = await dbToCall.getDataset(id);
+      if(Option.isNull(fetched)) return null;
+      var a =Option.unwrap(fetched);
+      var b = a.dataset;
+      return ?b;
+      // return Option(a.dataset);
+    };
+
+    return null;
+  };
+
   func pullDatasheets(canisterId:Text): async [{datasheet:Datasheet; id:Text; db:Text}] {
     var canisterTOCall = actor(canisterId): actor{getDatasheets (): async [{datasheet:Datasheet; id:Text}] };
     var datasheets =  await canisterTOCall.getDatasheets();

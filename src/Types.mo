@@ -13,4 +13,10 @@ module Types {
     isSubset: Bool;
   };
 
+
+  public type DatasetRecord = {
+    dataset: Blob;
+    datasheet: Datasheet;
+    id: Text;
+  };
 };

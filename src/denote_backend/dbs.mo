@@ -7,12 +7,7 @@ import T "../Types";
 
 actor DB {
   type Datasheet = T.Datasheet;
-
-  type DatasetRecord = {
-    dataset: Blob;
-    datasheet: Datasheet;
-    id: Text;
-  };
+  type DatasetRecord = T.DatasetRecord;
 
   let datarecords = HashMap.HashMap<Text, DatasetRecord>(5, Text.equal, Text.hash);
 
