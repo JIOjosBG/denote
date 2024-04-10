@@ -3,10 +3,7 @@ import Blob "mo:base/Blob";
 import Text "mo:base/Text";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
-// import Hash "mo:base/Hash";
-import Hash "mo:base/Hash";
 import Nat "mo:base/Nat";
-import Random "mo:base/Random";
 
 
 
