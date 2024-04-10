@@ -6,7 +6,19 @@
 	import { toasts } from '../stores/toasts.store';
 	import { userStore } from '../stores/user.store';
 	import { getDoc } from '@junobuild/core';
-
+	
+	
+	let lookingFor: string =''
+	$: filteredItems = items.filter(item => item.name.toLowerCase().includes(lookingFor.toLowerCase()));
+	let items = [
+		{ id: 1, name: 'Apple' },
+		{ id: 2, name: 'Banana' },
+		{ id: 3, name: 'Orange' },
+		{ id: 4, name: 'Pineapple' }
+	];
+	function handleInput(event) {
+    inputValue = event.target.value;
+  }
 	let mode: 'insert' | 'insert_done' | 'deleted' = 'insert';
 
 	let doc: Doc<Data> | undefined = undefined;
@@ -60,22 +72,21 @@
 	};
 </script>
 
-{#if mode === 'deleted'}
-	<p>Your subscription has been deleted.</p>
-{:else if mode === 'insert_done'}
-	<div class="done">
-		<IconVerified />
-		<div>
-			<p>Thanks for signing up. We will contact you very soon!</p>
-			<p>
-				Your subscription ID is <strong>{doc?.key ?? ''}</strong>.
-			</p>
-		</div>
-	</div>
-{:else}
-	<SignUp {doc} on:junoSubmitted={done} on:junoDeleted={deleted} />
-{/if}
+<SignUp {doc} on:junoSubmitted={done} on:junoDeleted={deleted} />
+<!-- <Listing /> -->
 
+<input type="text" 
+	id="search-field" 
+	placeholder="Enter Search Term" 
+	autocomplete="off"
+	bind:value={lookingFor}
+	on:input={handleInput} />
+
+	<ul>
+		{#each filteredItems as item (item.id)}
+		  <li>{item.name}</li>
+		{/each}
+	</ul>
 <style lang="scss">
 	.done {
 		display: flex;

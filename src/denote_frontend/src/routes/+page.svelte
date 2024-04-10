@@ -22,8 +22,7 @@
 <main>
 	<h1><img src={Logo} role="presentation" loading="lazy" decoding="async" alt="Juno" /></h1>
 	<p>
-		Sign-up to join <a href="https://juno.build" target="_blank" rel="noreferrer noopener">Juno</a> closed
-		beta.
+		Welcome to <a href="https://github.com/JIOjosBG/denote" target="_blank" rel="noreferrer noopener">Denote</a>.
 	</p>
 
 	<section>
