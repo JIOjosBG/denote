@@ -6,6 +6,7 @@
 	import { toasts } from '../stores/toasts.store';
 	import { userStore } from '../stores/user.store';
 	import { getDoc } from '@junobuild/core';
+	import DatasetBox from './DatasetBox.svelte';
 	// import {createActor, canisterId} from '../../../../declarations/denote_dbs';
 	// async function pullSheets() {
 	// 	try {
@@ -140,11 +141,11 @@
 	bind:value={lookingFor}
 	on:input={handleInput} />
 
-	<ul>
 		{#each filteredItems as item (item.id)}
-		  <li>{item.name}</li>
+		  <DatasetBox
+			{item}
+		/>
 		{/each}
-	</ul>
 <style lang="scss">
 	.done {
 		display: flex;
