@@ -1,0 +1,38 @@
+type Datasheet__1 = 
+ record {
+   comments: text;
+   creator: text;
+   fund: text;
+   isSubset: bool;
+   keywords: vec text;
+   organization: opt text;
+   size: nat;
+   title: text;
+   version: text;
+ };
+type Datasheet = 
+ record {
+   comments: text;
+   creator: text;
+   fund: text;
+   isSubset: bool;
+   keywords: vec text;
+   organization: opt text;
+   size: nat;
+   title: text;
+   version: text;
+ };
+type DatasetRecord = 
+ record {
+   dataset: blob;
+   datasheet: Datasheet__1;
+   id: text;
+ };
+service : {
+  getDataset: (text) -> (opt DatasetRecord) query;
+  getDatasheets: () -> (vec record {
+                              datasheet: Datasheet;
+                              id: text;
+                            }) query;
+  uploadDataset: (blob, Datasheet) -> ();
+}

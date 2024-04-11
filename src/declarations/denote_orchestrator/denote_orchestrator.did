@@ -1,0 +1,22 @@
+type Datasheet = 
+ record {
+   comments: text;
+   creator: text;
+   fund: text;
+   isSubset: bool;
+   keywords: vec text;
+   organization: opt text;
+   size: nat;
+   title: text;
+   version: text;
+ };
+service : {
+  addStorage: (text) -> () oneway;
+  downloadDataset: (text, text) -> (opt blob);
+  getAllDatasheets: () ->
+   (vec record {
+          datasheet: Datasheet;
+          db: text;
+          id: text;
+        });
+}
