@@ -7,7 +7,7 @@
     var element = document.createElement('a');
         element.setAttribute('href',
             'data:text/plain;charset=utf-8, '
-            + encodeURIComponent(item.name+" wtafak"));
+            + encodeURIComponent(item.datasheet.title+" wtafak"));
         element.setAttribute('download', `${item.name}.txt`);
         document.body.appendChild(element);
         element.click();
@@ -17,8 +17,7 @@
 </script>
 <div class="box">
     <!-- Content of the box goes here -->
-    {item.name}
-    {item.id}
+    {item.datasheet.title}
     <a on:click={download}>Download</a>
 
 </div>

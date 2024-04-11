@@ -3,7 +3,7 @@
 	import type { Data } from '$lib/types/data';
 	import { userStore } from '../stores/user.store';
 	import DatasetBox from './DatasetBox.svelte';
-	import { createActor as create_denote_dbs, canisterId} from "../../../../declarations/denote_dbs";
+	import { createActor as create_denote_orchestrator, canisterId} from "../../../../declarations/denote_orchestrator";
 	async function pullSheets() {
 		let host = process.env.DFX_NETWORK === "ic"
 		? "https://icp-api.io"
@@ -12,35 +12,29 @@
 		console.log("in pull sheets")
 		console.log('making instance')
 		console.log({canisterId, host})
-		let denote_dbs = create_denote_dbs(canisterId, {agentOptions:{host}})
+		let denote_dbs = create_denote_orchestrator(canisterId, {agentOptions:{host}})
 
 		try {
 			console.log("pulling sheets in try")
-			const sheets = await denote_dbs.getDatasheets();
-			console.log({sheets})
-			return sheets;
+			const allRecords = await denote_dbs.getAllDatasheets();
+			return allRecords || [];
 		} catch (error) {
-			console.log("WATAFAK")
-			console.error("Error fetching ids:", error);
+			console.log("Error pulling")
+			console.log(error)
+			return [];
 		}
 	}
-	console.log("pulling?")
-	pullSheets();
+	let allRecords: any = []
+	pullSheets().then(r=>allRecords=r);
 	let DSTitle: string;
 	let DSCreators: string;
 	let DSKeyWords: string;
-	let DSIsSample: boolean;
+	let DSIsSample: boolean;	
 
 
 	let lookingFor: string = ''
 	let fileToUpload: any;
-	$: filteredItems = items.filter(item => item.name.toLowerCase().includes(lookingFor.toLowerCase()));
-	let items = [
-		{ id: 1, name: 'Apple' },
-		{ id: 2, name: 'Banana' },
-		{ id: 3, name: 'Orange' },
-		{ id: 4, name: 'Pineapple' }
-	];
+	$: filteredItems = allRecords.filter((item:any) => item.datasheet.title.toLowerCase().includes(lookingFor.toLowerCase()));
 	function handleSubmit(){
 		if (fileToUpload) {
 			const reader = new FileReader();
