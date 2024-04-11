@@ -32,9 +32,6 @@
 		{ id: 3, name: 'Orange' },
 		{ id: 4, name: 'Pineapple' }
 	];
-	function handleInput(event) {
-		inputValue = event.target.value;
-	}
 	function handleSubmit(){
 		console.log({fileToUpload})
 		if (fileToUpload) {
@@ -93,18 +90,9 @@
 
 	$: $userStore, (async () => await loadData())();
 
-	const done = ({ detail }) => {
-		doc = detail?.doc ?? undefined;
-		mode = 'insert_done';
-	};
 
-	const deleted = () => {
-		doc = undefined;
-		mode = 'deleted';
-	};
 </script>
 
-<!-- <Listing /> -->
 <form on:submit|preventDefault={handleSubmit}>
 	<h3>Upload a new database!</h3>
 	<input type="file" 
@@ -135,14 +123,13 @@
 	id="search-field" 
 	placeholder="Enter Search Term" 
 	autocomplete="off"
-	bind:value={lookingFor}
-	on:input={handleInput} />
+	bind:value={lookingFor} 
+/>
 
-		{#each filteredItems as item (item.id)}
-		  <DatasetBox
-			{item}
-		/>
-		{/each}
+{#each filteredItems as item (item.id)}
+	<DatasetBox {item}/>
+{/each}
+
 <style lang="scss">
 	.done {
 		display: flex;
