@@ -6,9 +6,20 @@
 	import { toasts } from '../stores/toasts.store';
 	import { userStore } from '../stores/user.store';
 	import { getDoc } from '@junobuild/core';
-	
-	
+	// import {createActor, canisterId} from '../../../../declarations/denote_dbs';
+	// async function pullSheets() {
+	// 	try {
+	// 		const sheets = await createActor(canisterId).getDatasheets();
+	// 		console.log({sheets})
+	// 		return sheets;
+	// 	} catch (error) {
+	// 		console.log("WATAFAK")
+	// 		console.error("Error fetching ids:", error);
+	// 	}
+	// }
+	// pullSheets();
 	let lookingFor: string =''
+	let fileToUpload: any;
 	$: filteredItems = items.filter(item => item.name.toLowerCase().includes(lookingFor.toLowerCase()));
 	let items = [
 		{ id: 1, name: 'Apple' },
@@ -17,8 +28,23 @@
 		{ id: 4, name: 'Pineapple' }
 	];
 	function handleInput(event) {
-    inputValue = event.target.value;
-  }
+		inputValue = event.target.value;
+	}
+	function handleFileSubmit(){
+		console.log({fileToUpload})
+		if (fileToUpload) {
+			const reader = new FileReader();
+			reader.onload = () => {
+				const fileContent = reader.result;
+				console.log(fileContent);
+			};
+			reader.readAsText(fileToUpload);
+		}
+	}
+
+	function handleFileInputChange(event) {
+    	fileToUpload = event.target.files[0];
+  	}
 	let mode: 'insert' | 'insert_done' | 'deleted' = 'insert';
 
 	let doc: Doc<Data> | undefined = undefined;
@@ -72,9 +98,14 @@
 	};
 </script>
 
-<SignUp {doc} on:junoSubmitted={done} on:junoDeleted={deleted} />
+<!-- <SignUp {doc} on:junoSubmitted={done} on:junoDeleted={deleted} /> -->
 <!-- <Listing /> -->
-
+<form on:submit|preventDefault={handleFileSubmit}>
+	<input type="file" 
+		on:change={handleFileInputChange}
+	/>
+	<button type="submit">Submit</button>
+</form>
 <input type="text" 
 	id="search-field" 
 	placeholder="Enter Search Term" 
