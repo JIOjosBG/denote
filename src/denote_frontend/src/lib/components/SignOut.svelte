@@ -1,16 +1,6 @@
 <script lang="ts">
-	import { signOut } from '@junobuild/core';
-	import IconSignOut from '$lib/icons/IconSignOut.svelte';
 	import { userSignedInStore } from '$lib/stores/user.store';
 </script>
-
-{#if $userSignedInStore}
-	<p>
-		<button type="button" class="text" on:click|stopPropagation={signOut}
-			><IconSignOut /> Sign-out</button
-		>
-	</p>
-{/if}
 
 <style lang="scss">
 	@use '../styles/mixins/fonts';

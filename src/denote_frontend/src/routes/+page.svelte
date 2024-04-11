@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import { authSubscribe, initJuno, type User } from '@junobuild/core';
-	import Logo from '$lib/assets/juno_logo_white.svg';
+	import Logo from '$lib/assets/denote_logo.png'
 	import Main from '$lib/components/Main.svelte';
 	import { userStore } from '$lib/stores/user.store';
-	import SignOut from '$lib/components/SignOut.svelte';
 
 	let unsubscribe: (() => void) | undefined = undefined;
 
@@ -22,14 +21,12 @@
 <main>
 	<h1><img src={Logo} role="presentation" loading="lazy" decoding="async" alt="Juno" /></h1>
 	<p>
-		Welcome to <a href="https://github.com/JIOjosBG/denote" target="_blank" rel="noreferrer noopener">Denote</a>.
+		Welcome to Denote.
 	</p>
 
 	<section>
 		<Main />
 	</section>
-
-	<SignOut />
 </main>
 
 <style lang="scss">

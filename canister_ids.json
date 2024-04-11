@@ -1,0 +1,11 @@
+{
+  "denote_dbs": {
+    "ic": "nv2pz-6iaaa-aaaao-a3lkq-cai"
+  },
+  "denote_frontend": {
+    "ic": "n4zef-iaaaa-aaaao-a3lla-cai"
+  },
+  "denote_orchestrator": {
+    "ic": "n3ycr-fyaaa-aaaao-a3llq-cai"
+  }
+}

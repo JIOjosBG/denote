@@ -1,8 +1,6 @@
 <script lang="ts">
-	import SignUp from '$lib/components/SignUp.svelte';
 	import type { Doc } from '@junobuild/core';
 	import type { Data } from '$lib/types/data';
-	import IconVerified from '$lib/icons/IconVerified.svelte';
 	import { toasts } from '../stores/toasts.store';
 	import { userStore } from '../stores/user.store';
 	import { getDoc } from '@junobuild/core';
@@ -25,7 +23,7 @@
 	let DSIsSample: boolean;
 
 
-	let lookingFor: string =''
+	let lookingFor: string = ''
 	let fileToUpload: any;
 	$: filteredItems = items.filter(item => item.name.toLowerCase().includes(lookingFor.toLowerCase()));
 	let items = [
@@ -106,7 +104,6 @@
 	};
 </script>
 
-<!-- <SignUp {doc} on:junoSubmitted={done} on:junoDeleted={deleted} /> -->
 <!-- <Listing /> -->
 <form on:submit|preventDefault={handleSubmit}>
 	<h3>Upload a new database!</h3>
