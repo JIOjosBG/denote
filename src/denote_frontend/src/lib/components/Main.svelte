@@ -1,22 +1,31 @@
 <script lang="ts">
 	import type { Doc } from '@junobuild/core';
 	import type { Data } from '$lib/types/data';
-	import { toasts } from '../stores/toasts.store';
 	import { userStore } from '../stores/user.store';
-	import { getDoc } from '@junobuild/core';
 	import DatasetBox from './DatasetBox.svelte';
-	// import {createActor, canisterId} from '../../../../declarations/denote_dbs';
-	// async function pullSheets() {
-	// 	try {
-	// 		const sheets = await createActor(canisterId).getDatasheets();
-	// 		console.log({sheets})
-	// 		return sheets;
-	// 	} catch (error) {
-	// 		console.log("WATAFAK")
-	// 		console.error("Error fetching ids:", error);
-	// 	}
-	// }
-	// pullSheets();
+	import { createActor as create_denote_dbs, canisterId} from "../../../../declarations/denote_dbs";
+	async function pullSheets() {
+		let host = process.env.DFX_NETWORK === "ic"
+		? "https://icp-api.io"
+		: "http://localhost:4943"
+		
+		console.log("in pull sheets")
+		console.log('making instance')
+		console.log({canisterId, host})
+		let denote_dbs = create_denote_dbs(canisterId, {agentOptions:{host}})
+
+		try {
+			console.log("pulling sheets in try")
+			const sheets = await denote_dbs.getDatasheets();
+			console.log({sheets})
+			return sheets;
+		} catch (error) {
+			console.log("WATAFAK")
+			console.error("Error fetching ids:", error);
+		}
+	}
+	console.log("pulling?")
+	pullSheets();
 	let DSTitle: string;
 	let DSCreators: string;
 	let DSKeyWords: string;
@@ -33,7 +42,6 @@
 		{ id: 4, name: 'Pineapple' }
 	];
 	function handleSubmit(){
-		console.log({fileToUpload})
 		if (fileToUpload) {
 			const reader = new FileReader();
 			reader.onload = () => {
@@ -57,34 +65,6 @@
 			doc = undefined;
 			mode = 'insert';
 			return;
-		}
-
-		try {
-			const result: Doc<Data> | undefined = await getDoc({
-				collection: 'signup',
-				key: $userStore.key
-			});
-
-			doc =
-				doc !== undefined
-					? result !== undefined
-						? {
-								...doc,
-								...result
-						  }
-						: {
-								...doc
-						  }
-					: result !== undefined
-					? {
-							...result
-					  }
-					: undefined;
-		} catch (err: unknown) {
-			toasts.error({
-				text: 'Error while loading your data',
-				detail: err
-			});
 		}
 	};
 
