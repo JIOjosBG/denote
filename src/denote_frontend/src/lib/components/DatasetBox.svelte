@@ -1,24 +1,35 @@
 
 <script lang="ts">
+
   	export let item: any = undefined;
+    export let orchestrator: any;
+    export let isDownloading = false;
 
-    function download(file, text) {
- 
-    var element = document.createElement('a');
-        element.setAttribute('href',
-            'data:text/plain;charset=utf-8, '
-            + encodeURIComponent(item.datasheet.title+" wtafak"));
-        element.setAttribute('download', `${item.name}.txt`);
-        document.body.appendChild(element);
-        element.click();
+    async function download() {
+        isDownloading = true;
+        let host = process.env.DFX_NETWORK === "ic"
+		? "https://icp-api.io"
+		: "http://localhost:4943"
+        const datasetToDownload  = await orchestrator.downloadDataset(item.db, item.id)
+        const blob = new Blob([datasetToDownload]);
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = item.datasheet.title;
+        document.body.appendChild(a);
+        a.click();
+        isDownloading = false
 
-        document.body.removeChild(element);
     }
 </script>
 <div class="box">
-    <!-- Content of the box goes here -->
+    <!-- @TODO: add other sheet fields -->
     {item.datasheet.title}
+    {#if !isDownloading}
+    <p>loading...</p>
+    {:else}
     <a on:click={download}>Download</a>
+    {/if}
 
 </div>
 

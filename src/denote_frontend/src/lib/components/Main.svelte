@@ -4,20 +4,16 @@
 	import { userStore } from '../stores/user.store';
 	import DatasetBox from './DatasetBox.svelte';
 	import { createActor as create_denote_orchestrator, canisterId} from "../../../../declarations/denote_orchestrator";
+	let denote_orchestrator: any;
 	async function pullSheets() {
 		let host = process.env.DFX_NETWORK === "ic"
 		? "https://icp-api.io"
 		: "http://localhost:4943"
 		
-		console.log("in pull sheets")
-		console.log('making instance')
-		console.log({canisterId, host})
-		let denote_dbs = create_denote_orchestrator(canisterId, {agentOptions:{host}})
+		denote_orchestrator = create_denote_orchestrator(canisterId, {agentOptions:{host}})
 
 		try {
-			console.log("pulling sheets in try")
-			const allRecords = await denote_dbs.getAllDatasheets();
-			return allRecords || [];
+			return await denote_orchestrator.getAllDatasheets() || [];
 		} catch (error) {
 			console.log("Error pulling")
 			console.log(error)
@@ -101,7 +97,7 @@
 />
 
 {#each filteredItems as item (item.id)}
-	<DatasetBox {item}/>
+	<DatasetBox {item} orchestrator={denote_orchestrator}/>
 {/each}
 
 <style lang="scss">
