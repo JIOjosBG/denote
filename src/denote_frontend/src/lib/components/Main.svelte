@@ -18,6 +18,12 @@
 	// 	}
 	// }
 	// pullSheets();
+	let DSTitle: string;
+	let DSCreators: string;
+	let DSKeyWords: string;
+	let DSIsSample: boolean;
+
+
 	let lookingFor: string =''
 	let fileToUpload: any;
 	$: filteredItems = items.filter(item => item.name.toLowerCase().includes(lookingFor.toLowerCase()));
@@ -30,7 +36,7 @@
 	function handleInput(event) {
 		inputValue = event.target.value;
 	}
-	function handleFileSubmit(){
+	function handleSubmit(){
 		console.log({fileToUpload})
 		if (fileToUpload) {
 			const reader = new FileReader();
@@ -40,6 +46,7 @@
 			};
 			reader.readAsText(fileToUpload);
 		}
+		// @TODO: upload to canister
 	}
 
 	function handleFileInputChange(event) {
@@ -100,12 +107,32 @@
 
 <!-- <SignUp {doc} on:junoSubmitted={done} on:junoDeleted={deleted} /> -->
 <!-- <Listing /> -->
-<form on:submit|preventDefault={handleFileSubmit}>
+<form on:submit|preventDefault={handleSubmit}>
+	<h3>Upload a new database!</h3>
 	<input type="file" 
 		on:change={handleFileInputChange}
 	/>
+
+	<h5>Give us more information about the dataset -> Provide it with a datasheet!:)</h5>
+	<label for="DSTitle">Dataset Title:</label>
+	<input id="DSTitle" type="text" name="DSTitle" placeholder="Dataset Title" bind:value={DSTitle} />
+
+	<label for="DSCreators">Creators:</label>
+	<input id="DSCreators" type="text" name="DSCreators" placeholder="Dataset Creators" bind:value={DSCreators} />
+
+	<label for="DSKeyWords">Key Words:</label>
+	<input id="DSKeyWords" type="text" name="DSKeyWords" placeholder="Dataset Key words" bind:value={DSKeyWords} />
+
+	<label for="DSIsSample">Is the dataset a subset of a larger instance?</label>
+	<input id="DSTDSIsSampleitle" type="text" name="DSIsSample" placeholder="Dataset is sample" bind:value={DSIsSample} />
+
 	<button type="submit">Submit</button>
 </form>
+
+<hr>
+
+<h3>Look for an existing database!</h3>
+
 <input type="text" 
 	id="search-field" 
 	placeholder="Enter Search Term" 
