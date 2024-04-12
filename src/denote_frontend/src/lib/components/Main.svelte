@@ -1,24 +1,11 @@
 <script lang="ts">
-	function convertToBuffer(data: string | ArrayBuffer | null) {
-		if (data === null) {
-			return new ArrayBuffer(0); // Return an empty ArrayBuffer if input is null
-		} else if (typeof data === 'string') {
-			// Convert string to ArrayBuffer
-			const encoder = new TextEncoder();
-			return encoder.encode(data).buffer;
-		} else if (data instanceof ArrayBuffer) {
-			// Return ArrayBuffer as is
-			return data;
-		} else {
-			throw new Error('Unsupported data type. Please provide a string, ArrayBuffer, or null.');
-		}
-	}
 	import type { Doc } from '@junobuild/core';
 	import type { Data } from '$lib/types/data';
 	import { userStore } from '../stores/user.store';
 	import DatasetBox from './DatasetBox.svelte';
 	import { createActor as create_denote_orchestrator, canisterId} from "../../../../declarations/denote_orchestrator";
 	let denote_orchestrator: any;
+	let currentUser = localStorage.getItem('user') || ""
 	async function pullSheets() {
 		let host = process.env.DFX_NETWORK === "ic"
 		? "https://icp-api.io"
@@ -37,7 +24,7 @@
 	let allRecords: any = []
 	pullSheets().then(r=>allRecords=r);
 	let DSTitle: string;
-	let DSCreators: string;
+	let DSCreator: string = localStorage.getItem('user') || '';
 	let DSKeyWords: string;
 	let DSIsSample: string;	
 
@@ -50,11 +37,10 @@
 			const reader = new FileReader();
 			reader.onload = (event) => {
 				let fileContent = event?.target?.result;
-				console.log(fileContent)
 				denote_orchestrator.uploadDataset(fileContent, {
 					version: "1",
 					title: DSTitle,
-					creator: DSCreators,
+					creator: DSCreator,
 					organization:["AZTUES"],
 					fund: "AZTUES",
 					comments: "This dataset is uploaded to denote to test the frontend",
@@ -85,11 +71,22 @@
 
 	$: $userStore, (async () => await loadData())();
 
-
+	function login(){
+		localStorage.setItem('user',DSCreator);
+	}
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<h3>Upload a new database!</h3>
+	<h3>Upload a new dataset!</h3>
+	{#if !currentUser}
+		<h3>
+			You are not logged in. Add creator and click login.
+		</h3>
+		{:else}
+		<h3>
+			Logged in as {currentUser}
+		</h3>	
+		{/if}
 	<input type="file" 
 		on:change={handleFileInputChange}
 	/>
@@ -98,16 +95,18 @@
 	<label for="DSTitle">Dataset Title:</label>
 	<input id="DSTitle" type="text" name="DSTitle" placeholder="Dataset Title" bind:value={DSTitle} />
 
-	<label for="DSCreators">Creators:</label>
-	<input id="DSCreators" type="text" name="DSCreators" placeholder="Dataset Creators" bind:value={DSCreators} />
+	<label for="DSCreator">Creator:</label>
+	<input id="DSCreator" type="text" name="DSCreator" placeholder="Dataset Creator" bind:value={DSCreator} />
 
 	<label for="DSKeyWords">Key Words:</label>
 	<input id="DSKeyWords" type="text" name="DSKeyWords" placeholder="Dataset Key words" bind:value={DSKeyWords} />
 
 	<label for="DSIsSample">Is the dataset a subset of a larger instance?</label>
 	<input id="DSTDSIsSampleitle" type="text" name="DSIsSample" placeholder="Dataset is sample" bind:value={DSIsSample} />
-
-	<button type="submit">Submit</button>
+	<div class='container'>
+		<button type="submit">Submit</button>
+		<button type="button" on:click={login}>Login as creator</button>
+	</div>
 </form>
 
 <hr>
@@ -135,4 +134,22 @@
 			margin: 0;
 		}
 	}
+  .container {
+    display: flex;
+    /* Adjust flex container properties as needed */
+    flex-direction: row; /* or column, row-reverse, column-reverse */
+    align-items: center; /* or flex-start, flex-end, center, baseline, stretch */
+    flex-wrap: wrap; /* or nowrap, wrap, wrap-reverse */
+  }
+
+  .item {
+    /* Adjust flex item properties as needed */
+    flex: 1 1 auto; /* flex-grow, flex-shrink, flex-basis */
+    /* Other CSS properties */
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
 </style>

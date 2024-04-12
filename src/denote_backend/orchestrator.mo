@@ -2,6 +2,7 @@ import Text "mo:base/Text";
 import Array "mo:base/Array";
 import Option "mo:base/Option";
 import Error "mo:base/Error";
+import HashMap "mo:base/HashMap";
 import T "../Types";
 
 
@@ -11,6 +12,7 @@ actor Orchstrator{
   type DatasetRecord = T.DatasetRecord;
   
   var storages:[Text] = [];
+  var userRepotation:HashMap.HashMap<Text,Nat> = HashMap.HashMap(0, Text.equal, Text.hash);
   
   public func downloadDataset(db:Text, id:Text): async ?Text{
     if( Array.indexOf(db,storages,Text.equal) != null){
@@ -25,7 +27,23 @@ actor Orchstrator{
 
     return null;
   };
+
+  public func getUserRepotation(user:Text) : async ?Nat{
+    return userRepotation.get(user)
+  };
+
   public func uploadDataset(rawDataset: Text, datasheet:Datasheet) : async () {
+
+      switch (userRepotation.get(datasheet.creator)){
+        case (null){
+          userRepotation.put(datasheet.creator,0);
+          return;
+        };
+        case (Nat){
+          userRepotation.put(datasheet.creator,Option.unwrap(userRepotation.get(datasheet.creator))+1)
+        }
+      };
+
       if(storages.size()==0) throw Error.reject("No database canisters added");
 
       var dbToCall =  actor(storages[0]): actor {uploadDataset(rawDataset: Text, datasheet:Datasheet) : async ()};
