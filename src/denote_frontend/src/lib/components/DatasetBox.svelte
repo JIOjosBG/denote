@@ -24,14 +24,18 @@
     }
 </script>
 <div class="box">
-    <!-- @TODO: add other sheet fields -->
-    {item.datasheet.title}
-    {#if !isDownloading}
-    <a on:click={download}>Download</a>
-    {:else}
-    <p>loading...</p>
-    {/if}
-    By {item.datasheet.creator}
+    <h4>
+        
+        <!-- @TODO: add other sheet fields -->
+        {item.datasheet.title}
+        {#if !isDownloading}
+        <a on:click={download}>Download</a>
+        {:else}
+        <p>loading...</p>
+        {/if}
+    </h4>
+    <br>
+    <h6>By {item.datasheet.creator}</h6>
 
 </div>
 
