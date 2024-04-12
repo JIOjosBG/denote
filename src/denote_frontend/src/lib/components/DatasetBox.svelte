@@ -5,23 +5,42 @@
     export let orchestrator: any;
     export let isDownloading = false;
 
-    async function download() {
+    async function downloadDataset() {
         isDownloading = true;
         let host = process.env.DFX_NETWORK === "ic"
 		? "https://icp-api.io"
 		: "http://localhost:4943"
         const datasetToDownload  = await orchestrator.downloadDataset(item.db, item.id)
         const blob = new Blob([datasetToDownload]);
-        const url = URL.createObjectURL(blob);
-
-        const a = document.createElement("a");
+        
+        // --------
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement("a");
         a.href = url;
         a.download = item.datasheet.title;
         document.body.appendChild(a);
         a.click();
         isDownloading = false
-
     }
+    async function downloadDatasheet(){
+                // ---------
+                const url = URL.createObjectURL(new Blob([JSON.stringify(item,(key, value) => {
+                // Check if the value is a BigInt
+                if (typeof value === 'bigint') {
+                    // Convert BigInt to string
+                    return value.toString();
+                }
+                // Return the value as is for other types
+                return value;
+                })]));
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = item.datasheet.title+'.json';
+                document.body.appendChild(a);
+                a.click();
+                isDownloading = false
+    }
+
 </script>
 <div class="box">
     <h4>
@@ -29,7 +48,9 @@
         <!-- @TODO: add other sheet fields -->
         {item.datasheet.title}
         {#if !isDownloading}
-        <a on:click={download}>Download</a>
+        <br>
+        <a on:click={downloadDataset}>Dataset</a>
+        <a on:click={downloadDatasheet}>Datasheet</a>
         {:else}
         <p>loading...</p>
         {/if}

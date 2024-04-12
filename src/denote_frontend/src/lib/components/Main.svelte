@@ -121,7 +121,7 @@
 
 <hr>
 
-<h3>Look for an existing database!</h3>
+<h3>Look for an existing datasheet?</h3>
 
 <input type="text" 
 	id="search-field" 
