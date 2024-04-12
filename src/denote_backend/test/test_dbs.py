@@ -25,15 +25,15 @@ def test_uploadDataset(
     identity_anonymous: dict[str, str], network: str
 ) -> None:
 
-    record = '(record { version = "1.1"' \
-                        'title = "Some title",'\
-                        'creator = "Creator",'\
-                        'organization = "Org",'\
-                        'fund = "Fund",'\
-                        'comments = "Comments",'\
-                        'keywords = "key",'\
-                        'size = 3,'\
-                        'isSubset = true,'\
+    record = '(vec {}, record { version = "1.1" : text; ' \
+                        'title = "Some title": text; '\
+                        'creator = "Creator": text; '\
+                        'organization = opt "Org": opt text; '\
+                        'fund = "Fund": text; '\
+                        'comments = "Comments": text; '\
+                        'keywords = vec {"key"}; '\
+                        'size = 3: nat; '\
+                        'isSubset = true: bool'\
                         '})'
 
     response = call_canister_api(
@@ -48,4 +48,4 @@ def test_uploadDataset(
     )
     # Verify the response
     # assert "variant { Ok = record { donationAddress = record { address = " in response
-    assert True
+    assert response is "" 
