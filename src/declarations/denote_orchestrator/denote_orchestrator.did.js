@@ -12,11 +12,7 @@ export const idlFactory = ({ IDL }) => {
   });
   return IDL.Service({
     'addStorage' : IDL.Func([IDL.Text], [], ['oneway']),
-    'downloadDataset' : IDL.Func(
-        [IDL.Text, IDL.Text],
-        [IDL.Opt(IDL.Vec(IDL.Nat8))],
-        [],
-      ),
+    'downloadDataset' : IDL.Func([IDL.Text, IDL.Text], [IDL.Opt(IDL.Text)], []),
     'getAllDatasheets' : IDL.Func(
         [],
         [
@@ -30,6 +26,7 @@ export const idlFactory = ({ IDL }) => {
         ],
         [],
       ),
+    'uploadDataset' : IDL.Func([IDL.Text, Datasheet], [], []),
   });
 };
 export const init = ({ IDL }) => { return []; };

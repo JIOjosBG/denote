@@ -12,11 +12,12 @@ type Datasheet =
  };
 service : {
   addStorage: (text) -> () oneway;
-  downloadDataset: (text, text) -> (opt blob);
+  downloadDataset: (text, text) -> (opt text);
   getAllDatasheets: () ->
    (vec record {
           datasheet: Datasheet;
           db: text;
           id: text;
         });
+  uploadDataset: (text, Datasheet) -> ();
 }

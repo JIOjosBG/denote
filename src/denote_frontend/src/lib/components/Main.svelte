@@ -1,4 +1,18 @@
 <script lang="ts">
+	function convertToBuffer(data: string | ArrayBuffer | null) {
+		if (data === null) {
+			return new ArrayBuffer(0); // Return an empty ArrayBuffer if input is null
+		} else if (typeof data === 'string') {
+			// Convert string to ArrayBuffer
+			const encoder = new TextEncoder();
+			return encoder.encode(data).buffer;
+		} else if (data instanceof ArrayBuffer) {
+			// Return ArrayBuffer as is
+			return data;
+		} else {
+			throw new Error('Unsupported data type. Please provide a string, ArrayBuffer, or null.');
+		}
+	}
 	import type { Doc } from '@junobuild/core';
 	import type { Data } from '$lib/types/data';
 	import { userStore } from '../stores/user.store';
@@ -25,7 +39,7 @@
 	let DSTitle: string;
 	let DSCreators: string;
 	let DSKeyWords: string;
-	let DSIsSample: boolean;	
+	let DSIsSample: string;	
 
 
 	let lookingFor: string = ''
@@ -34,9 +48,20 @@
 	function handleSubmit(){
 		if (fileToUpload) {
 			const reader = new FileReader();
-			reader.onload = () => {
-				const fileContent = reader.result;
-				console.log(fileContent);
+			reader.onload = (event) => {
+				let fileContent = event?.target?.result;
+				console.log(fileContent)
+				denote_orchestrator.uploadDataset(fileContent, {
+					version: "1",
+					title: DSTitle,
+					creator: DSCreators,
+					organization:["AZTUES"],
+					fund: "AZTUES",
+					comments: "This dataset is uploaded to denote to test the frontend",
+					keywords: DSKeyWords.split(' ').map(i=> i.split(', ')).flat().map(i=>i.split(',')).flat().filter(i=>i !== ''),
+					size: 2,
+					isSubset: DSIsSample === "true"
+				})
 			};
 			reader.readAsText(fileToUpload);
 		}

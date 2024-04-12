@@ -24,7 +24,7 @@ type Datasheet =
  };
 type DatasetRecord = 
  record {
-   dataset: blob;
+   dataset: text;
    datasheet: Datasheet__1;
    id: text;
  };
@@ -34,5 +34,5 @@ service : {
                               datasheet: Datasheet;
                               id: text;
                             }) query;
-  uploadDataset: (blob, Datasheet) -> ();
+  uploadDataset: (text, Datasheet) -> ();
 }
