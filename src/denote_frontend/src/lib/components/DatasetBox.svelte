@@ -31,6 +31,7 @@
     {:else}
     <p>loading...</p>
     {/if}
+    By {item.datasheet.creator}
 
 </div>
 

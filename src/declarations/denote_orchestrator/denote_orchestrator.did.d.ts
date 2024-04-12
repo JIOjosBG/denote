@@ -20,6 +20,7 @@ export interface _SERVICE {
     [],
     Array<{ 'db' : string, 'id' : string, 'datasheet' : Datasheet }>
   >,
+  'getUserRepotation' : ActorMethod<[string], [] | [bigint]>,
   'uploadDataset' : ActorMethod<[string, Datasheet], undefined>,
 }
 export declare const idlFactory: IDL.InterfaceFactory;

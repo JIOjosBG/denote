@@ -19,5 +19,6 @@ service : {
           db: text;
           id: text;
         });
+  getUserRepotation: (text) -> (opt nat);
   uploadDataset: (text, Datasheet) -> ();
 }

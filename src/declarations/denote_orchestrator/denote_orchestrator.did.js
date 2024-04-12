@@ -26,6 +26,7 @@ export const idlFactory = ({ IDL }) => {
         ],
         [],
       ),
+    'getUserRepotation' : IDL.Func([IDL.Text], [IDL.Opt(IDL.Nat)], []),
     'uploadDataset' : IDL.Func([IDL.Text, Datasheet], [], []),
   });
 };

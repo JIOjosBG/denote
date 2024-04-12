@@ -21,17 +21,19 @@
 			return [];
 		}
 	}
-	let allRecords: any = []
+	let allRecords: any = null;
 	pullSheets().then(r=>allRecords=r);
 	let DSTitle: string;
 	let DSCreator: string = localStorage.getItem('user') || '';
 	let DSKeyWords: string;
 	let DSIsSample: string;	
+	let userRepotation: string;
 
+	denote_orchestrator.getUserRepotation(currentUser).then((r:any)=>{userRepotation = `${r}`})
 
 	let lookingFor: string = ''
 	let fileToUpload: any;
-	$: filteredItems = allRecords.filter((item:any) => item.datasheet.title.toLowerCase().includes(lookingFor.toLowerCase()));
+	$: filteredItems = (allRecords ||[]).filter((item:any) => item.datasheet.title.toLowerCase().includes(lookingFor.toLowerCase()));
 	function handleSubmit(){
 		if (fileToUpload) {
 			const reader = new FileReader();
@@ -77,16 +79,24 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<h3>Upload a new dataset!</h3>
 	{#if !currentUser}
-		<h3>
-			You are not logged in. Add creator and click login.
-		</h3>
-		{:else}
-		<h3>
-			Logged in as {currentUser}
-		</h3>	
-		{/if}
+	<h4>
+		You are not logged in. Add creator and click login.
+	</h4>
+	{:else}
+	<h4>
+		Logged in as {currentUser}
+		<h5>
+
+			{#if userRepotation}
+			You have {userRepotation} points
+			{:else}
+			Loading points...
+			{/if}
+		</h5>
+	</h4>	
+	{/if}
+	<h3>Upload a new dataset!</h3>
 	<input type="file" 
 		on:change={handleFileInputChange}
 	/>
@@ -120,9 +130,14 @@
 	bind:value={lookingFor} 
 />
 
-{#each filteredItems as item (item.id)}
-	<DatasetBox {item} orchestrator={denote_orchestrator}/>
-{/each}
+{#if allRecords}
+	{#each filteredItems as item (item.id)}
+		<DatasetBox {item} orchestrator={denote_orchestrator}/>
+	{/each}
+
+	{:else}	
+	<h3>Loading...</h3>
+{/if}
 
 <style lang="scss">
 	.done {
