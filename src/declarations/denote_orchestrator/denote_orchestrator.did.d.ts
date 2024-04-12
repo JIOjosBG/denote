@@ -15,14 +15,12 @@ export interface Datasheet {
 }
 export interface _SERVICE {
   'addStorage' : ActorMethod<[string], undefined>,
-  'downloadDataset' : ActorMethod<
-    [string, string],
-    [] | [Uint8Array | number[]]
-  >,
+  'downloadDataset' : ActorMethod<[string, string], [] | [string]>,
   'getAllDatasheets' : ActorMethod<
     [],
     Array<{ 'db' : string, 'id' : string, 'datasheet' : Datasheet }>
   >,
+  'uploadDataset' : ActorMethod<[string, Datasheet], undefined>,
 }
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];

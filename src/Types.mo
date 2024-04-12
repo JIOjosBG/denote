@@ -15,7 +15,7 @@ module Types {
 
 
   public type DatasetRecord = {
-    dataset: Blob;
+    dataset: Text;
     datasheet: Datasheet;
     id: Text;
   };

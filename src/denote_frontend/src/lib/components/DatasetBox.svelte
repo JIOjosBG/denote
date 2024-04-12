@@ -13,6 +13,7 @@
         const datasetToDownload  = await orchestrator.downloadDataset(item.db, item.id)
         const blob = new Blob([datasetToDownload]);
         const url = URL.createObjectURL(blob);
+
         const a = document.createElement("a");
         a.href = url;
         a.download = item.datasheet.title;
@@ -26,9 +27,9 @@
     <!-- @TODO: add other sheet fields -->
     {item.datasheet.title}
     {#if !isDownloading}
-    <p>loading...</p>
-    {:else}
     <a on:click={download}>Download</a>
+    {:else}
+    <p>loading...</p>
     {/if}
 
 </div>

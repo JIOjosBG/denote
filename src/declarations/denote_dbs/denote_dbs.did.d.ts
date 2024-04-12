@@ -4,7 +4,7 @@ import type { IDL } from '@dfinity/candid';
 
 export interface DatasetRecord {
   'id' : string,
-  'dataset' : Uint8Array | number[],
+  'dataset' : string,
   'datasheet' : Datasheet__1,
 }
 export interface Datasheet {
@@ -35,7 +35,7 @@ export interface _SERVICE {
     [],
     Array<{ 'id' : string, 'datasheet' : Datasheet }>
   >,
-  'uploadDataset' : ActorMethod<[Uint8Array | number[], Datasheet], undefined>,
+  'uploadDataset' : ActorMethod<[string, Datasheet], undefined>,
 }
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];

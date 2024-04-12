@@ -12,7 +12,7 @@ export const idlFactory = ({ IDL }) => {
   });
   const DatasetRecord = IDL.Record({
     'id' : IDL.Text,
-    'dataset' : IDL.Vec(IDL.Nat8),
+    'dataset' : IDL.Text,
     'datasheet' : Datasheet__1,
   });
   const Datasheet = IDL.Record({
@@ -33,7 +33,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(IDL.Record({ 'id' : IDL.Text, 'datasheet' : Datasheet }))],
         ['query'],
       ),
-    'uploadDataset' : IDL.Func([IDL.Vec(IDL.Nat8), Datasheet], [], []),
+    'uploadDataset' : IDL.Func([IDL.Text, Datasheet], [], []),
   });
 };
 export const init = ({ IDL }) => { return []; };

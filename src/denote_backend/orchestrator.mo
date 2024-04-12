@@ -1,6 +1,7 @@
 import Text "mo:base/Text";
 import Array "mo:base/Array";
 import Option "mo:base/Option";
+import Error "mo:base/Error";
 import T "../Types";
 
 
@@ -11,7 +12,7 @@ actor Orchstrator{
   
   var storages:[Text] = [];
   
-  public func downloadDataset(db:Text, id:Text): async ?Blob{
+  public func downloadDataset(db:Text, id:Text): async ?Text{
     if( Array.indexOf(db,storages,Text.equal) != null){
       var dbToCall =  actor(db): actor {getDataset (datasetId: Text): async ?DatasetRecord};
       var fetched = await dbToCall.getDataset(id);
@@ -23,6 +24,13 @@ actor Orchstrator{
     };
 
     return null;
+  };
+  public func uploadDataset(rawDataset: Text, datasheet:Datasheet) : async () {
+      if(storages.size()==0) throw Error.reject("No database canisters added");
+
+      var dbToCall =  actor(storages[0]): actor {uploadDataset(rawDataset: Text, datasheet:Datasheet) : async ()};
+      await dbToCall.uploadDataset(rawDataset, datasheet);
+      return ();
   };
 
   func pullDatasheets(canisterId:Text): async [{datasheet:Datasheet; id:Text; db:Text}] {

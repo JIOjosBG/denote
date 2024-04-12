@@ -1,5 +1,4 @@
 import HashMap "mo:base/HashMap";
-import Blob "mo:base/Blob";
 import Text "mo:base/Text";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
@@ -12,7 +11,7 @@ actor DB {
   let datarecords = HashMap.HashMap<Text, DatasetRecord>(5, Text.equal, Text.hash);
 
   
-  public func uploadDataset(rawDataset: Blob, datasheet:Datasheet) : async () {
+  public func uploadDataset(rawDataset: Text, datasheet:Datasheet) : async () {
     let newDataset:DatasetRecord = {
       dataset = rawDataset;
       datasheet = datasheet;
